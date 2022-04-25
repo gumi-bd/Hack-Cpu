@@ -1,0 +1,16 @@
+---
+:id: 100577817
+:submitters:
+- :name: Aditya Mahesh Patil
+  :email: cs20b004@smail.iitm.ac.in
+- :name: Smit Bagul
+  :email: cs20b011@smail.iitm.ac.in
+- :name: Karan Bardhan
+  :email: cs20b036@smail.iitm.ac.in
+:created_at: !ruby/object:ActiveSupport::TimeWithZone
+  utc: 2021-11-16 17:28:28.908387000 Z
+  zone: !ruby/object:ActiveSupport::TimeZone
+    name: America/Los_Angeles
+  time: 2021-11-16 09:28:28.908387000 Z
+:status: processed
+:score: 10.0

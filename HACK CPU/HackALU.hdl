@@ -1,0 +1,83 @@
+CHIP HackALU{
+
+	IN x[16],y[16],zx,zy,nx,ny,f,no;
+	OUT out[16],zr,ng;
+
+	PARTS:
+
+	And(a=false,b=false,out=z);
+
+	//ZX + NX operation 
+	muxor(x0=x,s1=zx,nx=nx,y[0]=p0,y[1]=p1,y[2]=p2,y[3]=p3,y[4]=p4,y[5]=p5,y[6]=p6,y[7]=p7,y[8]=p8,y[9]=p9,y[10]=p10,y[11]=p11,y[12]=p12,y[13]=p13,y[14]=p14,y[15]=p15);
+
+	//ZY + NY operation
+	muxor(x0=y,s1=zy,nx=ny,y[0]=q0,y[1]=q1,y[2]=q2,y[3]=q3,y[4]=q4,y[5]=q5,y[6]=q6,y[7]=q7,y[8]=q8,y[9]=q9,y[10]=q10,y[11]=q11,y[12]=q12,y[13]=q13,y[14]=q14,y[15]=q15);
+
+	//Addition
+	adder(x[0]=p0,x[1]=p1,x[2]=p2,x[3]=p3,x[4]=p4,x[5]=p5,x[6]=p6,x[7]=p7,x[8]=p8,x[9]=p9,x[10]=p10,x[11]=p11,x[12]=p12,x[13]=p13,x[14]=p14,x[15]=p15,y[0]=q0,y[1]=q1,y[2]=q2,y[3]=q3,y[4]=q4,y[5]=q5,y[6]=q6,y[7]=q7,y[8]=q8,y[9]=q9,y[10]=q10,y[11]=q11,y[12]=q12,y[13]=q13,y[14]=q14,y[15]=q15,Z[0]=d0,Z[1]=d1,Z[2]=d2,Z[3]=d3,Z[4]=d4,Z[5]=d5,Z[6]=d6,Z[7]=d7,Z[8]=d8,Z[9]=d9,Z[10]=d10,Z[11]=d11,Z[12]=d12,Z[13]=d13,Z[14]=d14,Z[15]=d15);
+
+	//And
+    	And(a= p0, b=q0, out= n0);
+    	And(a= p1, b=q1, out= n1);
+    	And(a= p2, b=q2, out= n2);
+    	And(a= p3, b=q3, out= n3);
+    	And(a= p4, b=q4, out= n4);
+    	And(a= p5, b=q5, out= n5);
+    	And(a= p6, b=q6, out= n6);
+    	And(a= p7, b=q7, out= n7);
+    	And(a= p8, b=q8, out= n8);
+    	And(a= p9, b=q9, out= n9);
+    	And(a= p10, b=q10, out= n10);
+    	And(a= p12, b=q12, out= n11);
+    	And(a= p12, b=q12, out= n12);
+    	And(a= p13, b=q13, out= n13);
+    	And(a= p14, b=q14, out= n14);
+    	And(a= p15, b=q15, out= n15);
+
+
+	//Selecting Operation
+	muxor(x1[0]=d0,x1[1]=d1,x1[2]=d2,x1[3]=d3,x1[4]=d4,x1[5]=d5,x1[6]=d6,x1[7]=d7,x1[8]=d8,x1[9]=d9,x1[10]=d10,x1[11]=d11,x1[12]=d12,x1[13]=d13,x1[14]=d14,x1[15]=d15,x0[0]=n0,x0[1]=n1,x0[2]=n2,x0[3]=n3,x0[4]=n4,x0[5]=n5,x0[6]=n6,x0[7]=n7,x0[8]=n8,x0[9]=n9,x0[10]=n10,x0[11]=n11,x0[12]=n12,x0[13]=n13,x0[14]=n14,x0[15]=n15,s1=f,nx=no,y[0]=out0,y[1]=out1,y[2]=out2,y[3]=out3,y[4]=out4,y[5]=out5,y[6]=out6,y[7]=out7,y[8]=out8,y[9]=out9,y[10]=out10,y[11]=out11,y[12]=out12,y[13]=out13,y[14]=out14,y[15]=out15);
+
+	//ZR
+	Or(a=out0,b=out1,out=v0);
+	Or(a=out2,b=out3,out=v1);
+	Or(a=out4,b=out5,out=v2);
+	Or(a=out6,b=out7,out=v3);
+	Or(a=out8,b=out9,out=v4);
+	Or(a=out10,b=out11,out=v5);
+	Or(a=out12,b=out13,out=v6);
+	Or(a=out14,b=out15,out=v7);
+	Or(a=v0,b=v1,out=b0);
+	Or(a=v2,b=v3,out=b1);
+	Or(a=v4,b=v5,out=b2);
+	Or(a=v6,b=v7,out=b3);
+	Or(a=b0,b=b1,out=n20);
+	Or(a=b2,b=b3,out=n21);
+	Or(a=n20,b=n21,out=notzr);
+        Not(in = notzr, out = zr);
+
+        //Out
+        And(a=out0,b=true,out=out[0]);
+	And(a=out1,b=true,out=out[1]);
+	And(a=out2,b=true,out=out[2]);
+	And(a=out3,b=true,out=out[3]);
+	And(a=out4,b=true,out=out[4]);
+        And(a=out5,b=true,out=out[5]);
+	And(a=out6,b=true,out=out[6]);
+	And(a=out7,b=true,out=out[7]);
+	And(a=out8,b=true,out=out[8]);
+	And(a=out9,b=true,out=out[9]);
+        And(a=out10,b=true,out=out[10]);
+	And(a=out12,b=true,out=out[12]);
+	And(a=out14,b=true,out=out[14]);
+	And(a=out15,b=true,out=out[15]);
+	And(a=out11,b=true,out=out[11]);
+        And(a=out13,b=true,out=out[13]);
+	
+
+	//NO
+	Or(a=out15,b=z,out=ng);
+
+}	
+
+

@@ -1,0 +1,89 @@
+CHIP muxor{
+    IN x0[16],x1[16],s1, nx;        
+    OUT y[16];
+
+    PARTS:
+    Not(in=s1, out=nots1);      
+
+    And(a=s1, b=x1[0], out=t10);
+    And(a=nots1, b=x0[0], out=t20);
+    Or(a=t10, b=t20, out=y0);
+
+    And(a=s1, b=x1[1], out=t11);
+    And(a=nots1, b=x0[1], out=t21);
+    Or(a=t11, b=t21, out=y1);
+
+    And(a=s1, b=x1[2], out=t12);
+    And(a=nots1, b=x0[2], out=t22);
+    Or(a=t12, b=t22, out=y2);
+
+    And(a=s1, b=x1[3], out=t13);
+    And(a=nots1, b=x0[3], out=t23);
+    Or(a=t13, b=t23, out=y3);
+
+    And(a=s1, b=x1[4], out=t14);
+    And(a=nots1, b=x0[4], out=t24);
+    Or(a=t14, b=t24, out=y4);
+
+    And(a=s1, b=x1[5], out=t15);
+    And(a=nots1, b=x0[5], out=t25);
+    Or(a=t15, b=t25, out=y5);
+
+    And(a=s1, b=x1[6], out=t16);
+    And(a=nots1, b=x0[6], out=t26);
+    Or(a=t16, b=t26, out=y6);
+
+    And(a=s1, b=x1[7], out=t17);
+    And(a=nots1, b=x0[7], out=t27);
+    Or(a=t17, b=t27, out=y7);
+
+
+    And(a=s1, b=x1[8], out=t18);
+    And(a=nots1, b=x0[8], out=t28);
+    Or(a=t18, b=t28, out=y8);
+
+    And(a=s1, b=x1[9], out=t19);
+    And(a=nots1, b=x0[9], out=t29);
+    Or(a=t19, b=t29, out=y9);
+
+    And(a=s1, b=x1[10], out=t110);
+    And(a=nots1, b=x0[10], out=t210);
+    Or(a=t110, b=t210, out=y10);
+
+    And(a=s1, b=x1[11], out=t111);
+    And(a=nots1, b=x0[11], out=t211);
+    Or(a=t111, b=t211, out=y11);
+
+    And(a=s1, b=x1[12], out=t114);
+    And(a=nots1, b=x0[12], out=t214);
+    Or(a=t114, b=t214, out=y12);
+
+    And(a=s1, b=x1[13], out=t112);
+    And(a=nots1, b=x0[13], out=t212);
+    Or(a=t112, b=t212, out=y13);
+
+    And(a=s1, b=x1[14], out=t113);
+    And(a=nots1, b=x0[14], out=t213);
+    Or(a=t113, b=t213, out=y14);
+
+    And(a=s1, b=x1[15], out=t117);
+    And(a=nots1, b=x0[15], out=t217);
+    Or(a=t117, b=t217, out=y15);
+
+   Xor(a = nx, b = y1, out = y[1]);
+   Xor(a = nx, b = y2, out = y[2]);
+   Xor(a = nx, b = y3, out = y[3]);
+   Xor(a = nx, b = y4, out = y[4]);
+   Xor(a = nx, b = y5, out = y[5]);
+   Xor(a = nx, b = y6, out = y[6]);
+   Xor(a = nx, b = y7, out = y[7]);
+   Xor(a = nx, b = y8, out = y[8]);
+   Xor(a = nx, b = y9, out = y[9]);
+   Xor(a = nx, b = y10, out = y[10]);
+   Xor(a = nx, b = y11, out = y[11]);
+   Xor(a = nx, b = y12, out = y[12]);
+   Xor(a = nx, b = y13, out = y[13]);
+   Xor(a = nx, b = y14, out = y[14]);
+   Xor(a = nx, b = y15, out = y[15]);
+   Xor(a = nx, b = y0, out = y[0]);
+}

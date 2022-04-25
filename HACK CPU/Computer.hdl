@@ -1,0 +1,14 @@
+CHIP Computer {
+
+    IN reset;
+
+    PARTS:
+    //Internal ROM chip
+    ROM32K(address=pc, out=instruction);    
+
+    //calling HACK CPU to perform instructions 
+    HackCPU(inM=input, instruction=instruction, reset=reset, outM=output, writeM=load, addressM=address, pc=pc);
+    
+    //Performing output and input using memory
+    Memory(in=output, load=load, address=address, out=input);   
+}

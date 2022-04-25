@@ -1,0 +1,231 @@
+CHIP adder
+{
+	IN x[16],y[16],AS;
+	OUT Z[16],OF;
+	PARTS:
+//Changing Y
+	Xor(a=AS, b=y[0], out=y0);
+    	Xor(a=AS, b=y[1], out=y1);
+    	Xor(a=AS, b=y[2], out=y2);
+    	Xor(a=AS, b=y[3], out=y3);
+    	Xor(a=AS, b=y[4], out=y4);
+    	Xor(a=AS, b=y[5], out=y5);
+    	Xor(a=AS, b=y[6], out=y6);
+    	Xor(a=AS, b=y[7], out=y7);
+    	Xor(a=AS, b=y[8], out=y8);
+    	Xor(a=AS, b=y[9], out=y9);
+    	Xor(a=AS, b=y[10], out=y10);
+    	Xor(a=AS, b=y[11], out=y11);
+    	Xor(a=AS, b=y[12], out=y12);
+    	Xor(a=AS, b=y[13], out=y13);
+    	Xor(a=AS, b=y[14], out=y14);
+    	Xor(a=AS, b=y[15], out=y15);
+
+//Propogate terms
+    	Xor(a=x[0], b=y0, out=P0);
+    	Xor(a=x[1], b=y1, out=P1);
+    	Xor(a=x[2], b=y2, out=P2);
+    	Xor(a=x[3], b=y3, out=P3);
+    	Xor(a=x[4], b=y4, out=P4);
+    	Xor(a=x[5], b=y5, out=P5);
+    	Xor(a=x[6], b=y6, out=P6);
+    	Xor(a=x[7], b=y7, out=P7);
+    	Xor(a=x[8], b=y8, out=P8);
+    	Xor(a=x[9], b=y9, out=P9);
+    	Xor(a=x[10], b=y10, out=P10);
+    	Xor(a=x[11], b=y11, out=P11);
+    	Xor(a=x[12], b=y12, out=P12);
+    	Xor(a=x[13], b=y13, out=P13);
+    	Xor(a=x[14], b=y14, out=P14);
+    	Xor(a=x[15], b=y15, out=P15);
+
+//Generate terms
+    	And(a=x[0], b=y0, out=G0);
+    	And(a=x[1], b=y1, out=G1);
+    	And(a=x[2], b=y2, out=G2);
+    	And(a=x[3], b=y3, out=G3);
+    	And(a=x[4], b=y4, out=G4);
+    	And(a=x[5], b=y5, out=G5);
+    	And(a=x[6], b=y6, out=G6);
+    	And(a=x[7], b=y7, out=G7);
+    	And(a=x[8], b=y8, out=G8);
+    	And(a=x[9], b=y9, out=G9);
+    	And(a=x[10], b=y10, out=G10);
+    	And(a=x[11], b=y11, out=G11);
+    	And(a=x[12], b=y12, out=G12);
+    	And(a=x[13], b=y13, out=G13);
+    	And(a=x[14], b=y14, out=G14);
+    	And(a=x[15], b=y15, out=G15);
+
+
+//Higher order propagate terms
+	And(a=P1, b = P0, out=U00);
+	And(a=P2, b = P3, out=U01);
+	And(a=U00, b=U01, out=PI0);
+
+	And(a=P5, b = P4, out=U02);
+	And(a=P6, b = P7, out=U03);
+	And(a=U02, b=U03, out=PI1);
+
+	And(a=P9, b = P8, out=U04);
+	And(a=P10, b = P11, out=U05);
+	And(a=U04, b=U05, out=PI2);
+
+	And(a=P13, b = P12, out=U06);
+	And(a=P14, b = P15, out=U07);
+	And(a=U06, b=U07, out=PI3);
+
+//Higher order generate terms
+	And(a=P1,b=G0, out=E0);
+	And(a=U01,b=E0, out=E1);
+	And(a=U01,b=G1, out=E2);
+	And(a=P3,b=G2, out=E3);
+	Or(a=E2,b=E1,out=H0);
+	Or(a=E3,b=G3,out=H1);
+	Or(a=H1,b=H0,out=GI0);
+
+	And(a=P5,b=G4, out=E4);
+	And(a=U03,b=E4, out=E5);
+	And(a=U03,b=G5, out=E6);
+	And(a=P7,b=G6, out=E7);
+	Or(a=E5,b=E6,out=H2);
+	Or(a=E7,b=G7,out=H3);
+	Or(a=H3,b=H2,out=GI1);
+
+	And(a=P9,b=G8, out=E8);
+	And(a=U05,b=E8, out=E9);
+	And(a=U05,b=G9, out=E10);
+	And(a=P11,b=G10, out=E11);
+	Or(a=E9,b=E10,out=H4);
+	Or(a=E11,b=G11,out=H5);
+	Or(a=H5,b=H4,out=GI2);
+
+	And(a=P13,b=G12, out=E12);
+	And(a=U07,b=E12, out=E13);
+	And(a=U07,b=G13, out=E14);
+	And(a=P15,b=G14, out=E15);
+	Or(a=E13,b=E14, out=H6);
+	Or(a=E15,b=G15, out=H7);
+	Or(a=H7,b=H6, out=GI3);
+
+//Carries 4,8,12,16:
+	
+	And(a=PI0, b=AS, out=M0);
+	Or(a=M0, b=GI0, out=c4);
+	
+	And(a=M0, b=PI1, out=M1);
+	And(a=PI1, b=GI0, out=N1);
+	Or(a=M1, b=N1, out=B1);
+	Or(a=B1, b=GI1,out=c8);
+	
+	And(a=M1, b=PI2, out=M2);
+	And(a=N1, b=PI2, out=N2);
+	And(a=PI2, b=GI1, out=T2);
+	Or(a=M2 , b=N2, out=B2);
+	Or(a=T2 , b=GI2, out=R2);
+	Or(a=B2 , b=R2, out=c12);
+
+	And(a=M2, b=PI3, out=M3);
+	And(a=N2, b=PI3, out=N3);
+	And(a=T2, b=PI3, out=T3);
+	And(a=PI3, b= GI2, out=Q3);
+	Or(a=M3 , b=N3, out=B3);
+	Or(a=T3  , b=Q3, out=R3);
+	Or(a=B3 , b=R3, out=W3);
+	Or(a=W3, b=GI3, out=c16);
+
+//Carry 1,2,3:
+    And(a= P0,b= AS,out= L10);
+    Or(a= L10, b= G0,out = c1);
+    And(a= P1,b= P0,out= L12);
+    And(a= L12,b= AS,out= J10);
+    And(a= P1,b= G0,out= J11);
+    Or(a= J11, b= J10,out = K11);
+    Or(a= K11, b= G1,out = c2);
+    And(a= P2,b= P1,out= L13);
+    And(a= P0,b= AS,out= L14);
+    And(a= L13,b= L14,out= J12);
+    And(a= L13,b= G0,out= J13);
+    And(a= P2,b= G1,out= J14);
+    Or(a= J12, b= J13,out = K12);
+    Or(a= J14, b= G2,out = K13);
+    Or(a= K12, b= K13,out = c3);
+    Xor(a = P0, b = AS, out = Z[0]);
+    Xor(a = P1, b = c1, out = Z[1]);
+    Xor(a = P2, b = c2, out = Z[2]);
+    Xor(a = P3, b = c3, out = Z[3]);
+
+//Carry 5,6,7:
+    And(a= P4,b= c4,out= L20);
+    Or(a= L20, b= G4,out = c5);
+    And(a= P5,b= P4,out= L22);
+    And(a= L22,b= c4,out= J20);
+    And(a= P5,b= G4,out= J21);
+    Or(a= J21, b= J20,out = K21);
+    Or(a= K21, b= G5,out = c6);
+    And(a= P6,b= P5,out= L23);
+    And(a= P4,b= c4,out= L24);
+    And(a= L23,b= L24,out= J22);
+    And(a= L23,b= G4,out= J23);
+    And(a= P6,b= G5,out= J24);
+    Or(a= J22, b= J23,out = K22);
+    Or(a= J24, b= G6,out = K23);
+    Or(a= K22, b= K23,out = c7);
+    Xor(a = P4, b = c4, out = Z[4]);
+    Xor(a = P5, b = c5, out = Z[5]);
+    Xor(a = P6, b = c6, out = Z[6]);
+    Xor(a = P7, b = c7, out = Z[7]);
+
+//Carry 9,10,11:
+    And(a= P8,b= c8,out= L30);
+    Or(a= L30, b= G8,out = c9);
+    And(a= P9,b= P8,out= L32);
+    And(a= L32,b= c8,out= J30);
+    And(a= P9,b= G8,out= J31);
+    Or(a= J31, b= J30,out = K31);
+    Or(a= K31, b= G9,out = c10);
+    And(a= P10,b= P9,out= L33);
+    And(a= P8,b= c8,out= L34);
+    And(a= L33,b= L34,out= J32);
+    And(a= L33,b= G8,out= J33);
+    And(a= P10,b= G9,out= J34);
+    Or(a= J32, b= J33,out = K32);
+    Or(a= J34, b= G10,out = K33);
+    Or(a= K32, b= K33,out = c11);
+    Xor(a = P8, b = c8, out = Z[8]);
+    Xor(a = P9, b = c9, out = Z[9]);
+    Xor(a = P10, b = c10, out = Z[10]);
+    Xor(a = P11, b = c11, out = Z[11]);
+
+//Carry 13,14,15:
+    And(a= P12,b= c12,out= L40);
+    Or(a= L40, b= G12,out = c13);
+    And(a= P13,b= P12,out= L42);
+    And(a= L42,b= c12,out= J40);
+    And(a= P13,b= G12,out= J41);
+    Or(a= J41, b= J40,out = K41);
+    Or(a= K41, b= G13,out = c14);
+    And(a= P14,b= P13,out= L43);
+    And(a= P12,b= c12,out= L44);
+    And(a= L43,b= L44,out= J42);
+    And(a= L43,b= G12,out= J43);
+    And(a= P14,b= G13,out= J44);
+    Or(a= J42, b= J43,out = K42);
+    Or(a= J44, b= G14,out = K43);
+    Or(a= K42, b= K43,out = c15);
+    Xor(a = P12, b = c12, out = Z[12]);
+    Xor(a = P13, b = c13, out = Z[13]);
+    Xor(a = P14, b = c14, out = Z[14]);
+    Xor(a = P15, b = c15, out = Z[15]);
+
+//Overflow:
+    Xor(a=c15,b=c16,out=OF);
+
+}
+	
+
+	
+	
+
+	
+	

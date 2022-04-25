@@ -1,0 +1,34 @@
+CHIP HackCPU {
+
+    IN  inM[16], instruction[16], reset;	
+    OUT outM[16], writeM, addressM[15], pc[15];	
+
+    PARTS:
+//decoding instruction and sending y    
+	Mux16(a=a, b=inM, sel=instruction[12], out=ALU2);
+//calling HackALU
+	HackALU(x=d, y=ALU2, zx=instruction[11], nx=instruction[10], zy=instruction[9], ny=instruction[8], f=instruction[7], no=instruction[6], out=outM, out=calc, zr=zr, ng=ng);
+//decoding instruction  
+	And(a=instruction[15], b=instruction[4], out=DLoad);
+//Reading or Writing in D register
+	DRegister(in=calc, load=DLoad, out=d);
+	Mux16(a=instruction, b=calc, sel=instruction[15], out=Ain);
+//decoding instruction  
+	And(a=instruction[15], b=instruction[5], out=ALoad1);
+	Not(in=instruction[15], out=ALoad2);
+	Or(a=ALoad1, b=ALoad2, out=ALoad);
+//Reading or Writing in A register 
+	ARegister(in=Ain, load=ALoad, out=a, out[0..14]=addressM);
+//decoding instruction  
+	And(a=instruction[15], b=instruction[3], out=writeM);
+	And(a=instruction[2], b=ng, out=j1);
+	And(a=instruction[1], b=zr, out=j2);
+	Or(a=ng, b=zr, out=nlnot);
+	Not(in=nlnot, out=nl);
+	And(a=instruction[0], b=nl, out=j3);	
+	Tor(a=j1, b=j2, c=j3, out=jmp1);
+	And(a=jmp1, b=instruction[15], out=jmp);
+	Not(in=jmp, out=inc);
+//program counter
+	PC(in=a, load=jmp, inc=inc, reset=reset, out[0..14]=pc);
+}
